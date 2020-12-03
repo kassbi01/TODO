@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block content %}
+    <form method='POST' action='/home'>
+
+        <div class="panel panel-default col-md-12">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="item" >Today's list</label>
+                        <input type="text" name="goal" id="goal" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                            <select name="priority" id="priority" class="form-control">
+                                <option value="low">low</option>
+                                <option value="medium">medium</option>
+                                <option value="high">high</option>
+                            </select>
+                    </div>
+
+                    <div  class="row form-inline">
+                        <label for="month">Date</label>
+                            <select name="month" id="month" class="form-control">
+                                <option>Jan</option>
+                                <option>Feb</option>
+                                <option>Mar</option> 
+                                <option>Apr</option>
+                                <option>May</option> 
+                                <option>Jun</option> 
+                                <option>Jul</option> 
+                                <option>Aug</option>
+                                <option>Sept</option>
+                                <option>Oct</option> 
+                                <option>Nov</option>
+                                <option>Dec</option>
+                            </select>
+
+                            <label for="day">/</label>
+                                <select name="day" id="day" class="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option> 
+                                    <option>4</option>
+                                    <option>5</option> 
+                                    <option>6</option> 
+                                    <option>7</option> 
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option> 
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option> 
+                                    <option>16</option>
+                                    <option>17</option> 
+                                    <option>18</option> 
+                                    <option>19</option> 
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option> 
+                                    <option>23</option>
+                                    <option>24</option>
+                                    <option>25</option> 
+                                    <option>26</option> 
+                                    <option>27</option>
+                                    <option>28</option>
+                                    <option>29</option> 
+                                    <option>30</option>
+                                    <option>31</option>
+                                </select>
+                    </div>
+
+                    <div class="form-inline" style="float: right;">
+                        <input type="submit" name="submit_button" value="Add to list" method='POST' action='/home'>
+                        <input type="submit" name="submit_button" value="Completed list" method='POST' action='/completed'>
+                    </div>
+                
+            
+
+
+        <button id="ajaxButton" type="button" style='{float:right;}'>Make a request</button>
+
+        <script>
+        (function() {
+        var httpRequest;
+        document.getElementById("ajaxButton").addEventListener('click', makeRequest);
+
+        function makeRequest() {
+            httpRequest = new XMLHttpRequest();
+
+            if (!httpRequest) {
+            alert('Giving up :( Cannot create an XMLHTTP instance');
+            return false;
+            }
+            httpRequest.onreadystatechange = alertContents;
+            httpRequest.open('GET', 'home.html');
+            httpRequest.send();
+        }
+
+        function alertContents() {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                alert(httpRequest.responseText);
+            } else {
+                alert('There was a problem with the request.');
+            }
+            }
+        }
+        })();
+        </script>
+
+        </div>
+    </div>
+
+    </form>
+
+    <form class="form-inline">
+        <h3> List of Items to do </h3>
+        <table class="table table-striped"> 
+            <tr>
+                <th scope='col'>Id</th>
+                <th scope='col'>Goal</th>
+                <th scope='col'>Priority</th>
+                <th scope='col'>Date</th>
+                <th scope='col'>Month</th>
+                <th scope='col'>Completed Items</th>
+            </tr>
+
+            {% for (id, goal, priority, date, month, complete) in todos %}
+                <tr>
+                    <td> {{ id }} </td>
+                    <td> {{ goal }} </td>
+                    <td> {{ priority }} </td>
+                    <td> {{ date }} </td>
+                    <td> {{ month }} </td>
+                    <td> <a href='/complete/{{id}}'> Mark as done </a> </td>
+                </tr>      
+            {% endfor %}
+
+        </table>
+
+    </form> 
+
+        <form class="form-inline">
+        <h3> Marked as completed </h3>
+        <table class="table table-striped"> 
+            <tr>
+                <th scope='col'>Id</th>
+                <th scope='col'>Goal</th>
+                <th scope='col'>Priority</th>
+                <th scope='col'>Date</th>
+                <th scope='col'>Month</th>
+                <th scope='col'>Completed Items</th>
+            </tr>
+
+            {% for (id, goal, priority, date, month, complete) in completes %}
+                <tr>
+                    <td> {{ id }} </td>
+                    <td> {{ goal }} </td>
+                    <td> {{ priority }} </td>
+                    <td> {{ date }} </td>
+                    <td> {{ month }} </td>
+                    <td> <a href='/incomplete/{{id}}'> Mark as undone </a> </td>
+                </tr>      
+            {% endfor %}
+
+        </table>
+
+    </form>
+
+{% endblock %}

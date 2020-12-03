@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form class="form-inline" method='POST' action='/completed'>
+        <h3> Completed item list </h3>
+        <table class="table table-striped"> 
+            <tr>
+                <th scope='col'>Id</th>
+                <th scope='col'>Goal</th>
+                <th scope='col'>Priority</th>
+                <th scope='col'>Date</th>
+                <th scope='col'>Month</th>
+            
+            </tr>
+
+            {% for (id, goal, priority, date, month, complete) in completes %}
+                <tr>
+                    <td> {{ id }} </td>
+                    <td> {{ goal }} </td>
+                    <td> {{ priority }} </td>
+                    <td> {{ date }} </td>
+                    <td> {{ month }} </td>
+                </tr>      
+            {% endfor %}
+
+        </table>
+
+    </form>
+{% endblock %}
